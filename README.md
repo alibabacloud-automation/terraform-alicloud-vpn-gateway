@@ -119,8 +119,8 @@ You can use this in your terraform template with the following steps.
 
 | Name                   | Description                  |
 | ---------------------- | ---------------------------- |
-| vpn_id       | The ID of VPN gateway instance.       |
-| cgw_id | The ID of customer gateway instance. |
-| vss_id | The ID of SSL-VPN server instance.               |
-| vsc_ids     | The IDs of SSL-VPN client certs. |
-| vco_id     | The ID of VPN connection. |
+| this_vpn_gateway_id       | The ID of VPN gateway instance.       |
+| this_vpn_customer_gateway_id | The ID of customer gateway instance. |
+| this_ssl_vpn_server_id | The ID of SSL-VPN server instance.               |
+| this_ssl_vpn_client_cert_ids     | The IDs of SSL-VPN client certs. |
+| this_vpn_connection_id     | The ID of VPN connection. |
