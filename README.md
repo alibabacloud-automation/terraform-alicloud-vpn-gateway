@@ -1,5 +1,15 @@
 # terraform-alicloud-vpn-gateway
-Terraform module which creates VPN gateway resources on Alibaba Cloud.
+Terraform module which creates VPN resources on Alibaba Cloud.
+
+These types of resources are supported:
+
+* [VPN Gateway](https://www.terraform.io/docs/providers/alicloud/d/vpn_gateways.html)
+* [VPN Customer Gateway](https://www.terraform.io/docs/providers/alicloud/d/vpn_customer_gateways.html)
+* [VPN Connection](https://www.terraform.io/docs/providers/alicloud/d/vpn_connections.html)
+* [SSL-VPN Server](https://www.terraform.io/docs/providers/alicloud/d/ssl_vpn_servers.html)
+* [SSL-VPN Client Certificate](https://www.terraform.io/docs/providers/alicloud/d/ssl_vpn_client_certs.html)
+
+##### Notes:
 
 - If cgw is not specified, the module will launch a new one using its own parameters.
 - The number of SSL-VPN client certs depends on the length of the parameter `ssl_client_cert_names`.
