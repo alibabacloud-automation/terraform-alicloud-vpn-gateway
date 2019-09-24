@@ -38,3 +38,4 @@ module "vpn" {
   ipsec_auth_alg           = "md5"
   ipsec_lifetime           = 8640
 }
+

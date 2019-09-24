@@ -1,3 +1,8 @@
+variable "region" {
+  description = "The region used to launch this module resources."
+  default     = ""
+}
+
 variable "vpn_name" {
   description = "Name of the VPN gateway."
 }
@@ -97,7 +102,7 @@ variable "ssl_compress" {
 
 variable "ssl_client_cert_names" {
   description = "The names of the client certificates."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -108,12 +113,12 @@ variable "ipsec_connection_name" {
 
 variable "ipsec_local_subnet" {
   description = "The CIDR block of the VPC to be connected with the local data center. This parameter is used for phase-two negotiation."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "ipsec_remote_subnet" {
   description = "The CIDR block of the local data center. This parameter is used for phase-two negotiation."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "ipsec_effect_immediately" {
@@ -185,3 +190,4 @@ variable "ipsec_lifetime" {
   description = "The SA lifecycle as the result of phase-two negotiation. The valid value is [0, 86400], the unit is second and the default value is 86400."
   default     = 86400
 }
+
