@@ -124,3 +124,83 @@ You can use this in your terraform template with the following steps.
 | this_ssl_vpn_server_id | The ID of SSL-VPN server instance.               |
 | this_ssl_vpn_client_cert_ids     | The IDs of SSL-VPN client certs. |
 | this_vpn_connection_id     | The ID of VPN connection. |
+
+## Notes
+From the version v1.2.0, the module has removed the following `provider` setting:
+
+```hcl
+provider "alicloud" {
+   version              = ">=1.56.0"
+   region               = var.region != "" ? var.region : null
+   configuration_source = "terraform-alicloud-modules/vpn-gateway"
+}
+```
+
+If you still want to use the `provider` setting to apply this module, you can specify a supported version, like 1.1.0:
+
+```hcl
+module "vpn" {
+   source   = "terraform-alicloud-modules/vpn-gateway/alicloud"
+   version  = "1.1.0"
+   region   = "cn-beijing"
+   vpn_name = "vpn-instance-name"
+   vpc_id   = "vpc-xxxxx"
+   // ...
+}
+```
+
+If you want to upgrade the module to 1.2.0 or higher in-place, you can define a provider which same region with
+previous region:
+
+```hcl
+provider "alicloud" {
+   region = "cn-beijing"
+}
+module "vpn" {
+   source   = "terraform-alicloud-modules/vpn-gateway/alicloud"
+   vpn_name = "vpn-instance-name"
+   vpc_id   = "vpc-xxxxx"
+   // ...
+}
+```
+or specify an alias provider with a defined region to the module using `providers`:
+
+```hcl
+provider "alicloud" {
+   region = "cn-beijing"
+   alias  = "bj"
+}
+module "vpn" {
+   source    = "terraform-alicloud-modules/vpn-gateway/alicloud"
+   providers = {
+      alicloud = alicloud.bj
+   }
+   vpn_name  = "vpn-instance-name"
+   vpc_id    = "vpc-xxxxx"
+   // ...
+}
+```
+
+and then run `terraform init` and `terraform apply` to make the defined provider effect to the existing module state.
+
+More details see [How to use provider in the module](https://www.terraform.io/docs/language/modules/develop/providers.html#passing-providers-explicitly)
+
+## Terraform versions
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.0 |
+| <a name="requirement_alicloud"></a> [alicloud](#requirement\_alicloud) | >= 1.56.0 |
+
+Authors
+-------
+Created and maintained by Alibaba Cloud Terraform Team(terraform@alibabacloud.com)
+
+License
+----
+Apache 2 Licensed. See LICENSE for full details.
+Reference
+---------
+* [Terraform-Provider-Alicloud Github](https://github.com/terraform-providers/terraform-provider-alicloud)
+* [Terraform-Provider-Alicloud Release](https://releases.hashicorp.com/terraform-provider-alicloud/)
+* [Terraform-Provider-Alicloud Docs](https://www.terraform.io/docs/providers/alicloud/index.html)
