@@ -1,9 +1,3 @@
-provider "alicloud" {
-  version              = ">=1.56.0"
-  region               = var.region != "" ? var.region : null
-  configuration_source = "terraform-alicloud-modules/vpn-gateway"
-}
-
 // Create a new VPN gateway instance
 resource "alicloud_vpn_gateway" "vpngw" {
   name                 = var.vpn_name
