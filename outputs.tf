@@ -22,4 +22,3 @@ output "this_vpn_connection_id" {
   description = "The ID of VPN connection."
   value       = join(",", alicloud_vpn_connection.connection.*.id)
 }
-

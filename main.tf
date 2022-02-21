@@ -4,24 +4,24 @@ resource "alicloud_vpn_gateway" "vpngw" {
   vpc_id               = var.vpc_id
   bandwidth            = var.vpn_bandwidth
   enable_ssl           = var.vpn_enable_ssl
+  enable_ipsec         = var.vpn_enable_ipsec
   instance_charge_type = var.vpn_charge_type
   description          = var.vpn_description
   period               = var.vpn_period
-  enable_ipsec         = var.vpn_enable_ipsec
   ssl_connections      = var.vpn_ssl_connections
 }
 
 // If there is not specifying cgw_id, the module will launch a new customer gateway
 resource "alicloud_vpn_customer_gateway" "vpncgw" {
-  count       = var.cgw_id == "" && var.cgw_ip_address != "" ? 1 : 0
+  count       = var.cgw_ip_address != "" ? 1 : 0
   name        = var.cgw_name
-  description = var.cgw_description
   ip_address  = var.cgw_ip_address
+  description = var.cgw_description
 }
 
 // The module will launch a new SSL-VPN server if enable_ssl 
 resource "alicloud_ssl_vpn_server" "sslserver" {
-  count          = var.vpn_enable_ssl && var.ssl_client_ip_pool != "" && var.ssl_local_subnet != "" ? 1 : 0
+  count          = var.vpn_enable_ssl && var.ssl_local_subnet != "" ? 1 : 0
   name           = var.ssl_vpn_server_name
   vpn_gateway_id = alicloud_vpn_gateway.vpngw.id
   client_ip_pool = var.ssl_client_ip_pool
@@ -34,14 +34,14 @@ resource "alicloud_ssl_vpn_server" "sslserver" {
 
 // The module will launch SSL-VPN client certs if enable_ssl 
 resource "alicloud_ssl_vpn_client_cert" "certs" {
-  count             = var.vpn_enable_ssl && var.ssl_client_ip_pool != "" && var.ssl_local_subnet != "" ? length(var.ssl_client_cert_names) : 0
+  count             = var.vpn_enable_ssl && var.ssl_local_subnet != "" ? length(var.ssl_client_cert_names) : 0
   name              = element(var.ssl_client_cert_names, count.index)
   ssl_vpn_server_id = alicloud_ssl_vpn_server.sslserver[0].id
 }
 
 // Create a new VPN connection
 resource "alicloud_vpn_connection" "connection" {
-  count               = var.cgw_id != "" || var.cgw_ip_address != "" ? 1 : 0
+  count               = var.cgw_ip_address != "" ? 1 : 0
   name                = var.ipsec_connection_name
   vpn_gateway_id      = alicloud_vpn_gateway.vpngw.id
   customer_gateway_id = var.cgw_id != "" ? var.cgw_id : alicloud_vpn_customer_gateway.vpncgw[0].id
@@ -68,4 +68,3 @@ resource "alicloud_vpn_connection" "connection" {
     ipsec_lifetime = var.ipsec_lifetime
   }
 }
-
