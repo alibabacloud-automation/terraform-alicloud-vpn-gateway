@@ -17,4 +17,3 @@ output "vsc_ids" {
 output "vco_id" {
   value = module.vpn.this_vpn_connection_id
 }
-

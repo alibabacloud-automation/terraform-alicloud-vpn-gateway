@@ -1,106 +1,46 @@
-variable "region" {
-  description = "(Deprecated from version 1.2.0) The region used to launch this module resources."
-  type        = string
-  default     = ""
-}
-
 #alicloud_vpn_gateway
 variable "vpn_name" {
   description = "Name of the VPN gateway."
   type        = string
-  default     = ""
-}
-
-variable "vpc_id" {
-  description = "The VPN belongs the vpc_id, the field can't be changed."
-  type        = string
-  default     = ""
-}
-
-variable "vpn_bandwidth" {
-  description = "The value should be 10, 100, 200, 500, 1000 if the user is postpaid, otherwise it can be 5, 10, 20, 50, 100, 200, 500, 1000."
-  type        = number
-  default     = 10
-}
-
-variable "vpn_enable_ssl" {
-  description = "Enable or Disable SSL VPN.  At least one type of VPN should be enabled."
-  type        = bool
-  default     = false
-}
-
-variable "vpn_enable_ipsec" {
-  description = "Enable or Disable IPSec VPN. At least one type of VPN should be enabled."
-  type        = bool
-  default     = true
-}
-
-variable "vpn_charge_type" {
-  description = "The charge type for instance. Valid value: PostPaid, PrePaid. Default to PostPaid."
-  type        = string
-  default     = "PostPaid"
+  default     = "tf-testacc-vpn"
 }
 
 variable "vpn_description" {
   description = "The description of the VPN instance."
   type        = string
-  default     = ""
+  default     = "tf-testacc-description"
 }
 
 variable "vpn_period" {
   description = "The filed is only required while the InstanceChargeType is prepaid."
   type        = number
-  default     = 1
-}
-
-variable "vpn_ssl_connections" {
-  description = "The max connections of SSL VPN. Default to 5. This field is ignored when enable_ssl is false."
-  type        = number
-  default     = 5
+  default     = 2
 }
 
 #alicloud_vpn_customer_gateway
-variable "cgw_id" {
-  description = "The customer gateway id used to connect with vpn gateway."
-  type        = string
-  default     = ""
-}
-
 variable "cgw_name" {
   description = "The name of the VPN customer gateway. Defaults to null."
   type        = string
-  default     = ""
+  default     = "tf-testacc-cgw"
 }
 
 variable "cgw_description" {
   description = "The description of the VPN customer gateway instance."
   type        = string
-  default     = ""
-}
-
-variable "cgw_ip_address" {
-  description = "The IP address of the customer gateway."
-  type        = string
-  default     = ""
+  default     = "tf-testacc-cgw-description"
 }
 
 #alicloud_ssl_vpn_server
 variable "ssl_vpn_server_name" {
   description = "The name of the SSL-VPN server."
   type        = string
-  default     = ""
-}
-
-variable "ssl_client_ip_pool" {
-  description = "The CIDR block from which access addresses are allocated to the virtual network interface card of the client."
-  type        = string
-  default     = ""
+  default     = "tf-testacc-ssl"
 }
 
 variable "ssl_local_subnet" {
   description = "The CIDR block to be accessed by the client through the SSL-VPN connection."
   type        = string
-  default     = ""
+  default     = "10.0.1.0/24"
 }
 
 variable "ssl_protocol" {
@@ -115,12 +55,6 @@ variable "ssl_cipher" {
   default     = "AES-128-CBC"
 }
 
-variable "ssl_port" {
-  description = "The port used by the SSL-VPN server. The default value is 1194.The following ports cannot be used: [22, 2222, 22222, 9000, 9001, 9002, 7505, 80, 443, 53, 68, 123, 4510, 4560, 500, 4500]."
-  type        = number
-  default     = 1194
-}
-
 variable "ssl_compress" {
   description = "Specify whether to compress the communication. Valid value: true (default) | false."
   type        = bool
@@ -131,26 +65,20 @@ variable "ssl_compress" {
 variable "ssl_client_cert_names" {
   description = "The names of the client certificates."
   type        = list(string)
-  default     = []
+  default     = ["tf-testacc-ssl-client-cert"]
 }
 
 #alicloud_vpn_connection
 variable "ipsec_connection_name" {
   description = "The name of the IPsec connection."
   type        = string
-  default     = ""
-}
-
-variable "ipsec_local_subnet" {
-  description = "The CIDR block of the VPC to be connected with the local data center. This parameter is used for phase-two negotiation."
-  type        = list(string)
-  default     = []
+  default     = "tf-testacc-ipsec"
 }
 
 variable "ipsec_remote_subnet" {
   description = "The CIDR block of the local data center. This parameter is used for phase-two negotiation."
   type        = list(string)
-  default     = []
+  default     = ["10.0.0.0/24"]
 }
 
 variable "ipsec_effect_immediately" {
@@ -192,7 +120,7 @@ variable "ike_lifetime" {
 variable "psk" {
   description = "Used for authentication between the IPsec VPN gateway and the customer gateway."
   type        = string
-  default     = ""
+  default     = "tf-testvpn"
 }
 
 variable "ike_pfs" {
@@ -204,13 +132,13 @@ variable "ike_pfs" {
 variable "ike_remote_id" {
   description = "The identification of the customer gateway."
   type        = string
-  default     = ""
+  default     = "test-remote-id"
 }
 
 variable "ike_local_id" {
   description = "The identification of the VPN gateway."
   type        = string
-  default     = ""
+  default     = "test-local-id"
 }
 
 variable "ipsec_pfs" {
