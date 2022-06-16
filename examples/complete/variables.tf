@@ -75,6 +75,12 @@ variable "ipsec_connection_name" {
   default     = "tf-testacc-ipsec"
 }
 
+variable "ipsec_local_subnet" {
+  description = "The CIDR block of the local data center. This parameter is used for phase-two negotiation."
+  type        = list(string)
+  default     = ["172.16.0.0/24"]
+}
+
 variable "ipsec_remote_subnet" {
   description = "The CIDR block of the local data center. This parameter is used for phase-two negotiation."
   type        = list(string)
