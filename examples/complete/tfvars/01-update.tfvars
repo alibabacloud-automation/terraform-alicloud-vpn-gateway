@@ -19,7 +19,8 @@ ssl_client_cert_names = ["update-tf-testacc-ssl-client-cert"]
 
 #alicloud_vpn_connection
 ipsec_connection_name    = "update-tf-testacc-ipsec"
-ipsec_remote_subnet      = ["172.16.1.0/24"]
+ipsec_local_subnet       = ["172.16.1.0/24"]
+ipsec_remote_subnet      = ["10.0.1.0/24"]
 ipsec_effect_immediately = true
 ike_auth_al              = "md5"
 ike_enc_alg              = "aes192"

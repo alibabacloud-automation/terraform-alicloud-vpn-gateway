@@ -35,7 +35,7 @@ module "vpn" {
 
   #alicloud_vpn_connection
   ipsec_connection_name    = var.ipsec_connection_name
-  ipsec_local_subnet       = [data.alicloud_vpcs.default.vpcs.0.cidr_block]
+  ipsec_local_subnet       = var.ipsec_local_subnet
   ipsec_remote_subnet      = var.ipsec_remote_subnet
   ipsec_effect_immediately = var.ipsec_effect_immediately
   ike_auth_alg             = var.ike_auth_alg
