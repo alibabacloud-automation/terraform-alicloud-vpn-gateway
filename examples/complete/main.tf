@@ -1,5 +1,15 @@
-data "alicloud_vpcs" "default" {
-  name_regex = "default-NODELETING"
+data "alicloud_zones" "example" {
+  available_resource_creation = "VSwitch"
+}
+
+module "vpc" {
+  source             = "alibaba/vpc/alicloud"
+  create             = true
+  vpc_name           = var.vpn_name
+  vpc_cidr           = "172.16.0.0/16"
+  vswitch_name       = var.vpn_name
+  vswitch_cidrs      = ["172.16.0.0/21"]
+  availability_zones = [data.alicloud_zones.example.zones.0.id]
 }
 
 module "vpn" {
@@ -7,7 +17,7 @@ module "vpn" {
 
   #alicloud_vpn_gateway
   vpn_name            = var.vpn_name
-  vpc_id              = data.alicloud_vpcs.default.vpcs.0.id
+  vpc_id              = module.vpc.this_vpc_id
   vpn_bandwidth       = 10
   vpn_enable_ssl      = true
   vpn_enable_ipsec    = true
