@@ -1,10 +1,17 @@
-variable "region" {
-  description = "(Deprecated from version 1.2.0) The region used to launch this module resources."
-  type        = string
-  default     = ""
-}
 
 #alicloud_vpn_gateway
+variable "create_vpn_gateway" {
+  description = "Whether to create vpn gateway."
+  type        = string
+  default     = true
+}
+
+variable "existing_vpn_gateway_id" {
+  description = "The existing vpn gateway id."
+  type        = string
+  default     = null
+}
+
 variable "vpn_name" {
   description = "Name of the VPN gateway."
   type        = string
@@ -15,6 +22,18 @@ variable "vpc_id" {
   description = "The VPN belongs the vpc_id, the field can't be changed."
   type        = string
   default     = ""
+}
+
+variable "vswitch_id" {
+  description = "The ID of the VSwitch to which the VPN gateway is attached."
+  type        = string
+  default     = null
+}
+
+variable "disaster_recovery_vswitch_id" {
+  description = "The ID of the backup VSwitch to which the VPN gateway is attached."
+  type        = string
+  default     = null
 }
 
 variable "vpn_bandwidth" {
@@ -60,10 +79,16 @@ variable "vpn_ssl_connections" {
 }
 
 #alicloud_vpn_customer_gateway
+variable "create_vpn_customer_gateway" {
+  description = "Whether to create vpn customer gateway."
+  type        = string
+  default     = true
+}
+
 variable "cgw_id" {
   description = "The customer gateway id used to connect with vpn gateway."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "cgw_name" {
@@ -159,80 +184,43 @@ variable "ipsec_effect_immediately" {
   default     = false
 }
 
-variable "ike_auth_alg" {
-  description = "The authentication algorithm of phase-one negotiation. Valid value: md5 | sha1. Default value: sha1."
-  type        = string
-  default     = "sha1"
+variable "enable_tunnels_bgp" {
+  description = "Whether to enable BGP for the tunnels."
+  type        = bool
+  default     = null
 }
 
-variable "ike_enc_alg" {
-  description = "The encryption algorithm of phase-one negotiation. Valid value: aes | aes192 | aes256 | des | 3des. Default Valid value: aes."
-  type        = string
-  default     = "aes"
-}
+variable "tunnel_options_specification" {
+  type = list(object({
+    role                 = optional(string, null)
+    status               = optional(string, null)
+    customer_gateway_id  = optional(string, null)
+    enable_nat_traversal = optional(bool, null)
+    enable_dpd           = optional(bool, null)
+    tunnel_ike_config = optional(list(object({
+      ike_auth_alg = optional(string, null)
+      local_id     = optional(string, null)
+      ike_enc_alg  = optional(string, null)
+      ike_version  = optional(string, null)
+      ike_mode     = optional(string, null)
+      ike_lifetime = optional(string, null)
+      psk          = optional(string, null)
+      remote_id    = optional(string, null)
+      ike_pfs      = optional(string, null)
+    })), [])
+    tunnel_bgp_config = optional(list(object({
+      local_asn    = optional(string, null)
+      tunnel_cidr  = optional(string, null)
+      local_bgp_ip = optional(string, null)
+    })), [])
+    tunnel_ipsec_config = optional(list(object({
+      ipsec_pfs      = optional(string, null)
+      ipsec_enc_alg  = optional(string, null)
+      ipsec_auth_alg = optional(string, null)
+      ipsec_lifetime = optional(number, null)
+    })), [])
+  }))
+  description = "The tunnel options specification config."
+  default     = []
 
-variable "ike_version" {
-  description = "The version of the IKE protocol. Valid value: ikev1 | ikev2. Default value: ikev1."
-  type        = string
-  default     = "ikev1"
-}
-
-variable "ike_mode" {
-  description = "The negotiation mode of IKE V1. Valid value: main (main mode) | aggressive (aggressive mode). Default value: main."
-  type        = string
-  default     = "main"
-}
-
-variable "ike_lifetime" {
-  description = "The SA lifecycle as the result of phase-one negotiation. The valid value of n is [0, 86400], the unit is second and the default value is 86400."
-  type        = number
-  default     = 86400
-}
-
-variable "psk" {
-  description = "Used for authentication between the IPsec VPN gateway and the customer gateway."
-  type        = string
-  default     = ""
-}
-
-variable "ike_pfs" {
-  description = "The Diffie-Hellman key exchange algorithm used by phase-one negotiation. Valid value: group1 | group2 | group5 | group14 | group24. Default value: group2."
-  type        = string
-  default     = "group2"
-}
-
-variable "ike_remote_id" {
-  description = "The identification of the customer gateway."
-  type        = string
-  default     = ""
-}
-
-variable "ike_local_id" {
-  description = "The identification of the VPN gateway."
-  type        = string
-  default     = ""
-}
-
-variable "ipsec_pfs" {
-  description = "The Diffie-Hellman key exchange algorithm used by phase-two negotiation. Valid value: group1 | group2 | group5 | group14 | group24. Default value: group2."
-  type        = string
-  default     = "group2"
-}
-
-variable "ipsec_enc_alg" {
-  description = "The encryption algorithm of phase-two negotiation. Valid value: aes | aes192 | aes256 | des | 3des. Default value: aes."
-  type        = string
-  default     = "aes"
-}
-
-variable "ipsec_auth_alg" {
-  description = "The authentication algorithm of phase-two negotiation. Valid value: md5 | sha1. Default value: sha1."
-  type        = string
-  default     = "sha1"
-}
-
-variable "ipsec_lifetime" {
-  description = "The SA lifecycle as the result of phase-two negotiation. The valid value is [0, 86400], the unit is second and the default value is 86400."
-  type        = number
-  default     = 86400
 }

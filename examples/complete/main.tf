@@ -1,20 +1,14 @@
-data "alicloud_vpcs" "default" {
-  name_regex = "default-NODELETING"
+
+
+data "alicloud_vpn_gateways" "default" {
+
 }
 
 module "vpn" {
   source = "../.."
 
-  #alicloud_vpn_gateway
-  vpn_name            = var.vpn_name
-  vpc_id              = data.alicloud_vpcs.default.vpcs.0.id
-  vpn_bandwidth       = 10
-  vpn_enable_ssl      = true
-  vpn_enable_ipsec    = true
-  vpn_charge_type     = "PrePaid"
-  vpn_description     = var.vpn_description
-  vpn_period          = var.vpn_period
-  vpn_ssl_connections = 5
+  create_vpn_gateway      = false
+  existing_vpn_gateway_id = data.alicloud_vpn_gateways.default.ids[0]
 
   #alicloud_vpn_customer_gateway
   cgw_name        = var.cgw_name
@@ -38,18 +32,50 @@ module "vpn" {
   ipsec_local_subnet       = var.ipsec_local_subnet
   ipsec_remote_subnet      = var.ipsec_remote_subnet
   ipsec_effect_immediately = var.ipsec_effect_immediately
-  ike_auth_alg             = var.ike_auth_alg
-  ike_enc_alg              = var.ike_enc_alg
-  ike_version              = var.ike_version
-  ike_mode                 = var.ike_mode
-  ike_lifetime             = var.ike_lifetime
-  psk                      = var.psk
-  ike_pfs                  = var.ike_pfs
-  ike_remote_id            = var.ike_remote_id
-  ike_local_id             = var.ike_local_id
-  ipsec_pfs                = var.ipsec_pfs
-  ipsec_enc_alg            = var.ipsec_enc_alg
-  ipsec_auth_alg           = var.ipsec_auth_alg
-  ipsec_lifetime           = var.ipsec_lifetime
+  tunnel_options_specification = [{
+    tunnel_ipsec_config = [{
+      ipsec_auth_alg = "md5"
+      ipsec_enc_alg  = "aes256"
+      ipsec_lifetime = "16400"
+      ipsec_pfs      = "group5"
+    }]
 
+
+    role = "master"
+
+    tunnel_ike_config = [{
+      ike_mode     = "aggressive"
+      ike_version  = "ikev2"
+      local_id     = "localid_tunnel2"
+      psk          = "12345678"
+      remote_id    = "remote2"
+      ike_auth_alg = "md5"
+      ike_enc_alg  = "aes256"
+      ike_lifetime = "3600"
+      ike_pfs      = "group14"
+    }]
+    }, {
+    tunnel_ike_config = [{
+      remote_id    = "remote24"
+      ike_enc_alg  = "aes256"
+      ike_lifetime = "27000"
+      ike_mode     = "aggressive"
+      ike_pfs      = "group5"
+      ike_auth_alg = "md5"
+      ike_version  = "ikev2"
+      local_id     = "localid_tunnel2"
+      psk          = "12345678"
+    }]
+
+    tunnel_ipsec_config = [{
+      ipsec_lifetime = "2700"
+      ipsec_pfs      = "group14"
+      ipsec_auth_alg = "md5"
+      ipsec_enc_alg  = "aes256"
+    }]
+
+
+    role = "slave"
+
+  }]
 }
