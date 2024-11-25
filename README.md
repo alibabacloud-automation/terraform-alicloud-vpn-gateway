@@ -71,59 +71,81 @@ You can use this in your terraform template with the following steps.
    - ALICLOUD_SECRET_KEY
    - ALICLOUD_REGION
 
-# Input
 
-| Name                     | Description                                               | Type   | Default                     | Required |
-| :----------------------- | :-------------------------------------------------------- | ------ | --------------------------- | -------- |
-| vpn_name                     | Name of the VPN gateway.                                  | string | null                        | yes      |
-| vpc_id              | The VPN belongs the vpc_id, the field can't be changed.                      | string | null                        | yes       |
-| vpn_bandwidth             | The value should be 10, 100, 200, 500, 1000 if the user is postpaid, otherwise it can be 5, 10, 20, 50, 100, 200, 500, 1000.                         | int    | null                           | yes       |
-| vpn_enable_ssl              | Enable or Disable SSL VPN.  At least one type of VPN should be enabled.                     | boolean | false                        | no       |
-| vpn_enable_ipsec        | Enable or Disable IPSec VPN. At least one type of VPN should be enabled.                             | boolean | true                        | no      |
-| vpn_charge_type | The charge type for instance. Valid value: PostPaid, PrePaid.                      | string | PostPaid                        | yes      |
-| vpn_description          | The description of the VPN instance. | string| null                       | no       |
-| vpn_period           | The filed is only required while the InstanceChargeType is prepaid.               | int | 1                        | yes      |
-| vpn_ssl_connections               | The max connections of SSL VPN. This field is ignored when enable_ssl is false. | int | 5                        | no      |
-| cgw_id      | The customer gateway id used to connect with vpn gateway.            | string| null                       | no       |
-| cgw_ip_address      | The IP address of the customer gateway.            | string| null                       | no       |
-| cgw_name      | The name of the VPN customer gateway.            | string| null                       | no       |
-| cgw_description      | The description of the VPN customer gateway instance.            | string| null                       | no       |
-| ssl_vpn_server_name      | The name of the SSL-VPN server.            | string| null                       | no       |
-| ssl_client_ip_pool      | The CIDR block from which access addresses are allocated to the virtual network interface card of the client.            | string | null                       | no       |
-| ssl_local_subnet      | The CIDR block to be accessed by the client through the SSL-VPN connection.            | string | null                       | no       |
-| ssl_protocol      | The protocol used by the SSL-VPN server. Valid value: UDP,TCP.            | string| UDP                       | no       |
-| ssl_cipher      | The encryption algorithm used by the SSL-VPN server. Valid value: AES-128-CBC, AES-192-CBC, AES-256-CBC, none.            | string| AES-128-CBC                       | no       |
-| ssl_port      | The port used by the SSL-VPN server. The default value is 1194.The following ports cannot be used: [22, 2222, 22222, 9000, 9001, 9002, 7505, 80, 443, 53, 68, 123, 4510, 4560, 500, 4500].            | int | 1194                       | no       |
-| ssl_compress      | Specify whether to compress the communication. Valid value: true, false.            | boolean| true                       | no       |
-| ssl_client_cert_names      | The names of the client certificates.            | list | []                       | no       |
-| ipsec_connection_name      | The name of the IPsec connection.            | string| null                       | no       |
-| ipsec_local_subnet      | The CIDR block of the VPC to be connected with the local data center. This parameter is used for phase-two negotiation.            | list | null                       | yes       |
-| ipsec_remote_subnet      | The CIDR block of the local data center. This parameter is used for phase-two negotiation.           | list | null                       | yes       |
-| ipsec_effect_immediately      | Whether to delete a successfully negotiated IPsec tunnel and initiate a negotiation again. Valid value:true,false.           | boolean| true                       | no       |
-| ike_auth_alg      | The authentication algorithm of phase-one negotiation. Valid value: md5, sha1.            | string| sha1                       | no       |
-| ike_enc_alg      | The encryption algorithm of phase-one negotiation. Valid value: aes, aes192, aes256, des, 3des.            | string | aes                       | no       |
-| ike_version      | The version of the IKE protocol. Valid value: ikev1, ikev2.            | string | ikev1                       | no       |
-| ike_mode      | The negotiation mode of IKE V1. Valid value: main (main mode), aggressive (aggressive mode).           | string | main                       | no       |
-| ike_lifetime      | The SA lifecycle as the result of phase-one negotiation. The valid value of n is [0, 86400], the unit is second.            | int | 86400                       | no       |
-| psk      | Used for authentication between the IPsec VPN gateway and the customer gateway.            | string | null                       | no       |
-| ike_pfs      | The Diffie-Hellman key exchange algorithm used by phase-one negotiation. Valid value: group1, group2, group5, group14, group24.            | string| group2                       | no       |
-| ike_remote_id      | The identification of the customer gateway.            | string| null                       | no       |
-| ike_local_id      | The identification of the VPN gateway.            | string| null                       | no       |
-| ipsec_pfs      | The Diffie-Hellman key exchange algorithm used by phase-two negotiation. Valid value: group1, group2, group5, group14, group24.            | string| group2                       | no       |
-| ipsec_enc_alg      | The encryption algorithm of phase-two negotiation. Valid value: aes, aes192, aes256, des, 3des.          | string| aes                       | no       |
-| ipsec_auth_alg      | The authentication algorithm of phase-two negotiation. Valid value: md5, sha1.          | string| sha1                       | no       |
-| ipsec_lifetime      | The SA lifecycle as the result of phase-two negotiation. The valid value is [0, 86400], the unit is second.            | int | 86400                       | no       |
+<!-- BEGIN_TF_DOCS -->
+## Requirements
 
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
 
-## Output
+## Providers
 
-| Name                   | Description                  |
-| ---------------------- | ---------------------------- |
-| this_vpn_gateway_id       | The ID of VPN gateway instance.       |
-| this_vpn_customer_gateway_id | The ID of customer gateway instance. |
-| this_ssl_vpn_server_id | The ID of SSL-VPN server instance.               |
-| this_ssl_vpn_client_cert_ids     | The IDs of SSL-VPN client certs. |
-| this_vpn_connection_id     | The ID of VPN connection. |
+| Name | Version |
+|------|---------|
+| <a name="provider_alicloud"></a> [alicloud](#provider\_alicloud) | n/a |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [alicloud_ssl_vpn_client_cert.certs](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/ssl_vpn_client_cert) | resource |
+| [alicloud_ssl_vpn_server.sslserver](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/ssl_vpn_server) | resource |
+| [alicloud_vpn_connection.connection](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/vpn_connection) | resource |
+| [alicloud_vpn_customer_gateway.vpncgw](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/vpn_customer_gateway) | resource |
+| [alicloud_vpn_gateway.vpngw](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/vpn_gateway) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_cgw_description"></a> [cgw\_description](#input\_cgw\_description) | The description of the VPN customer gateway instance. | `string` | `""` | no |
+| <a name="input_cgw_id"></a> [cgw\_id](#input\_cgw\_id) | The customer gateway id used to connect with vpn gateway. | `string` | `null` | no |
+| <a name="input_cgw_ip_address"></a> [cgw\_ip\_address](#input\_cgw\_ip\_address) | The IP address of the customer gateway. | `string` | `""` | no |
+| <a name="input_cgw_name"></a> [cgw\_name](#input\_cgw\_name) | The name of the VPN customer gateway. Defaults to null. | `string` | `""` | no |
+| <a name="input_create_vpn_customer_gateway"></a> [create\_vpn\_customer\_gateway](#input\_create\_vpn\_customer\_gateway) | Whether to create vpn customer gateway. | `string` | `true` | no |
+| <a name="input_create_vpn_gateway"></a> [create\_vpn\_gateway](#input\_create\_vpn\_gateway) | Whether to create vpn gateway. | `string` | `true` | no |
+| <a name="input_disaster_recovery_vswitch_id"></a> [disaster\_recovery\_vswitch\_id](#input\_disaster\_recovery\_vswitch\_id) | The ID of the backup VSwitch to which the VPN gateway is attached. | `string` | `null` | no |
+| <a name="input_enable_tunnels_bgp"></a> [enable\_tunnels\_bgp](#input\_enable\_tunnels\_bgp) | Whether to enable BGP for the tunnels. | `bool` | `null` | no |
+| <a name="input_existing_vpn_gateway_id"></a> [existing\_vpn\_gateway\_id](#input\_existing\_vpn\_gateway\_id) | The existing vpn gateway id. | `string` | `null` | no |
+| <a name="input_ipsec_connection_name"></a> [ipsec\_connection\_name](#input\_ipsec\_connection\_name) | The name of the IPsec connection. | `string` | `""` | no |
+| <a name="input_ipsec_effect_immediately"></a> [ipsec\_effect\_immediately](#input\_ipsec\_effect\_immediately) | Whether to delete a successfully negotiated IPsec tunnel and initiate a negotiation again. Valid value:true,false. | `bool` | `false` | no |
+| <a name="input_ipsec_local_subnet"></a> [ipsec\_local\_subnet](#input\_ipsec\_local\_subnet) | The CIDR block of the VPC to be connected with the local data center. This parameter is used for phase-two negotiation. | `list(string)` | `[]` | no |
+| <a name="input_ipsec_remote_subnet"></a> [ipsec\_remote\_subnet](#input\_ipsec\_remote\_subnet) | The CIDR block of the local data center. This parameter is used for phase-two negotiation. | `list(string)` | `[]` | no |
+| <a name="input_ssl_cipher"></a> [ssl\_cipher](#input\_ssl\_cipher) | The encryption algorithm used by the SSL-VPN server. Valid value: AES-128-CBC (default)\| AES-192-CBC \| AES-256-CBC \| none. | `string` | `"AES-128-CBC"` | no |
+| <a name="input_ssl_client_cert_names"></a> [ssl\_client\_cert\_names](#input\_ssl\_client\_cert\_names) | The names of the client certificates. | `list(string)` | `[]` | no |
+| <a name="input_ssl_client_ip_pool"></a> [ssl\_client\_ip\_pool](#input\_ssl\_client\_ip\_pool) | The CIDR block from which access addresses are allocated to the virtual network interface card of the client. | `string` | `""` | no |
+| <a name="input_ssl_compress"></a> [ssl\_compress](#input\_ssl\_compress) | Specify whether to compress the communication. Valid value: true (default) \| false. | `bool` | `true` | no |
+| <a name="input_ssl_local_subnet"></a> [ssl\_local\_subnet](#input\_ssl\_local\_subnet) | The CIDR block to be accessed by the client through the SSL-VPN connection. | `string` | `""` | no |
+| <a name="input_ssl_port"></a> [ssl\_port](#input\_ssl\_port) | The port used by the SSL-VPN server. The default value is 1194.The following ports cannot be used: [22, 2222, 22222, 9000, 9001, 9002, 7505, 80, 443, 53, 68, 123, 4510, 4560, 500, 4500]. | `number` | `1194` | no |
+| <a name="input_ssl_protocol"></a> [ssl\_protocol](#input\_ssl\_protocol) | The protocol used by the SSL-VPN server. Valid value: UDP(default) \|TCP. | `string` | `"UDP"` | no |
+| <a name="input_ssl_vpn_server_name"></a> [ssl\_vpn\_server\_name](#input\_ssl\_vpn\_server\_name) | The name of the SSL-VPN server. | `string` | `""` | no |
+| <a name="input_tunnel_options_specification"></a> [tunnel\_options\_specification](#input\_tunnel\_options\_specification) | The tunnel options specification config. | <pre>list(object({<br>    role                 = optional(string, null)<br>    status               = optional(string, null)<br>    customer_gateway_id  = optional(string, null)<br>    enable_nat_traversal = optional(bool, null)<br>    enable_dpd           = optional(bool, null)<br>    tunnel_ike_config = optional(list(object({<br>      ike_auth_alg = optional(string, null)<br>      local_id     = optional(string, null)<br>      ike_enc_alg  = optional(string, null)<br>      ike_version  = optional(string, null)<br>      ike_mode     = optional(string, null)<br>      ike_lifetime = optional(string, null)<br>      psk          = optional(string, null)<br>      remote_id    = optional(string, null)<br>      ike_pfs      = optional(string, null)<br>    })), [])<br>    tunnel_bgp_config = optional(list(object({<br>      local_asn    = optional(string, null)<br>      tunnel_cidr  = optional(string, null)<br>      local_bgp_ip = optional(string, null)<br>    })), [])<br>    tunnel_ipsec_config = optional(list(object({<br>      ipsec_pfs      = optional(string, null)<br>      ipsec_enc_alg  = optional(string, null)<br>      ipsec_auth_alg = optional(string, null)<br>      ipsec_lifetime = optional(number, null)<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPN belongs the vpc\_id, the field can't be changed. | `string` | `""` | no |
+| <a name="input_vpn_bandwidth"></a> [vpn\_bandwidth](#input\_vpn\_bandwidth) | The value should be 10, 100, 200, 500, 1000 if the user is postpaid, otherwise it can be 5, 10, 20, 50, 100, 200, 500, 1000. | `number` | `10` | no |
+| <a name="input_vpn_charge_type"></a> [vpn\_charge\_type](#input\_vpn\_charge\_type) | The charge type for instance. Valid value: PostPaid, PrePaid. Default to PostPaid. | `string` | `"PostPaid"` | no |
+| <a name="input_vpn_description"></a> [vpn\_description](#input\_vpn\_description) | The description of the VPN instance. | `string` | `""` | no |
+| <a name="input_vpn_enable_ipsec"></a> [vpn\_enable\_ipsec](#input\_vpn\_enable\_ipsec) | Enable or Disable IPSec VPN. At least one type of VPN should be enabled. | `bool` | `true` | no |
+| <a name="input_vpn_enable_ssl"></a> [vpn\_enable\_ssl](#input\_vpn\_enable\_ssl) | Enable or Disable SSL VPN.  At least one type of VPN should be enabled. | `bool` | `false` | no |
+| <a name="input_vpn_name"></a> [vpn\_name](#input\_vpn\_name) | Name of the VPN gateway. | `string` | `""` | no |
+| <a name="input_vpn_period"></a> [vpn\_period](#input\_vpn\_period) | The filed is only required while the InstanceChargeType is prepaid. | `number` | `1` | no |
+| <a name="input_vpn_ssl_connections"></a> [vpn\_ssl\_connections](#input\_vpn\_ssl\_connections) | The max connections of SSL VPN. Default to 5. This field is ignored when enable\_ssl is false. | `number` | `5` | no |
+| <a name="input_vswitch_id"></a> [vswitch\_id](#input\_vswitch\_id) | The ID of the VSwitch to which the VPN gateway is attached. | `string` | `null` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_this_ssl_vpn_client_cert_ids"></a> [this\_ssl\_vpn\_client\_cert\_ids](#output\_this\_ssl\_vpn\_client\_cert\_ids) | The IDs of SSL-VPN client certs. |
+| <a name="output_this_ssl_vpn_server_id"></a> [this\_ssl\_vpn\_server\_id](#output\_this\_ssl\_vpn\_server\_id) | The ID of SSL-VPN server instance. |
+| <a name="output_this_vpn_connection_id"></a> [this\_vpn\_connection\_id](#output\_this\_vpn\_connection\_id) | The ID of VPN connection. |
+| <a name="output_this_vpn_customer_gateway_id"></a> [this\_vpn\_customer\_gateway\_id](#output\_this\_vpn\_customer\_gateway\_id) | The ID of customer gateway instance. |
+| <a name="output_this_vpn_gateway_id"></a> [this\_vpn\_gateway\_id](#output\_this\_vpn\_gateway\_id) | The ID of VPN gateway instance. |
+<!-- END_TF_DOCS -->
 
 ## Notes
 From the version v1.2.0, the module has removed the following `provider` setting:
@@ -185,12 +207,6 @@ and then run `terraform init` and `terraform apply` to make the defined provider
 
 More details see [How to use provider in the module](https://www.terraform.io/docs/language/modules/develop/providers.html#passing-providers-explicitly)
 
-## Terraform versions
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
-| <a name="requirement_alicloud"></a> [alicloud](#requirement\_alicloud) | >= 1.56.0 |
 
 Authors
 -------
