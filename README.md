@@ -78,12 +78,13 @@ You can use this in your terraform template with the following steps.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_alicloud"></a> [alicloud](#requirement\_alicloud) | >= 1.200.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_alicloud"></a> [alicloud](#provider\_alicloud) | n/a |
+| <a name="provider_alicloud"></a> [alicloud](#provider\_alicloud) | >= 1.200.0 |
 
 ## Modules
 
@@ -93,11 +94,11 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [alicloud_ssl_vpn_client_cert.certs](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/ssl_vpn_client_cert) | resource |
-| [alicloud_ssl_vpn_server.sslserver](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/ssl_vpn_server) | resource |
-| [alicloud_vpn_connection.connection](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/vpn_connection) | resource |
-| [alicloud_vpn_customer_gateway.vpncgw](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/vpn_customer_gateway) | resource |
-| [alicloud_vpn_gateway.vpngw](https://registry.terraform.io/providers/hashicorp/alicloud/latest/docs/resources/vpn_gateway) | resource |
+| [alicloud_ssl_vpn_client_cert.certs](https://registry.terraform.io/providers/aliyun/alicloud/latest/docs/resources/ssl_vpn_client_cert) | resource |
+| [alicloud_ssl_vpn_server.sslserver](https://registry.terraform.io/providers/aliyun/alicloud/latest/docs/resources/ssl_vpn_server) | resource |
+| [alicloud_vpn_connection.connection](https://registry.terraform.io/providers/aliyun/alicloud/latest/docs/resources/vpn_connection) | resource |
+| [alicloud_vpn_customer_gateway.vpncgw](https://registry.terraform.io/providers/aliyun/alicloud/latest/docs/resources/vpn_customer_gateway) | resource |
+| [alicloud_vpn_gateway.vpngw](https://registry.terraform.io/providers/aliyun/alicloud/latest/docs/resources/vpn_gateway) | resource |
 
 ## Inputs
 
@@ -124,7 +125,7 @@ No modules.
 | <a name="input_ssl_port"></a> [ssl\_port](#input\_ssl\_port) | The port used by the SSL-VPN server. The default value is 1194.The following ports cannot be used: [22, 2222, 22222, 9000, 9001, 9002, 7505, 80, 443, 53, 68, 123, 4510, 4560, 500, 4500]. | `number` | `1194` | no |
 | <a name="input_ssl_protocol"></a> [ssl\_protocol](#input\_ssl\_protocol) | The protocol used by the SSL-VPN server. Valid value: UDP(default) \|TCP. | `string` | `"UDP"` | no |
 | <a name="input_ssl_vpn_server_name"></a> [ssl\_vpn\_server\_name](#input\_ssl\_vpn\_server\_name) | The name of the SSL-VPN server. | `string` | `""` | no |
-| <a name="input_tunnel_options_specification"></a> [tunnel\_options\_specification](#input\_tunnel\_options\_specification) | The tunnel options specification config. | <pre>list(object({<br>    role                 = optional(string, null)<br>    status               = optional(string, null)<br>    customer_gateway_id  = optional(string, null)<br>    enable_nat_traversal = optional(bool, null)<br>    enable_dpd           = optional(bool, null)<br>    tunnel_ike_config = optional(list(object({<br>      ike_auth_alg = optional(string, null)<br>      local_id     = optional(string, null)<br>      ike_enc_alg  = optional(string, null)<br>      ike_version  = optional(string, null)<br>      ike_mode     = optional(string, null)<br>      ike_lifetime = optional(string, null)<br>      psk          = optional(string, null)<br>      remote_id    = optional(string, null)<br>      ike_pfs      = optional(string, null)<br>    })), [])<br>    tunnel_bgp_config = optional(list(object({<br>      local_asn    = optional(string, null)<br>      tunnel_cidr  = optional(string, null)<br>      local_bgp_ip = optional(string, null)<br>    })), [])<br>    tunnel_ipsec_config = optional(list(object({<br>      ipsec_pfs      = optional(string, null)<br>      ipsec_enc_alg  = optional(string, null)<br>      ipsec_auth_alg = optional(string, null)<br>      ipsec_lifetime = optional(number, null)<br>    })), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_tunnel_options_specification"></a> [tunnel\_options\_specification](#input\_tunnel\_options\_specification) | The tunnel options specification config. | <pre>list(object({<br/>    role                 = optional(string, null)<br/>    status               = optional(string, null)<br/>    customer_gateway_id  = optional(string, null)<br/>    enable_nat_traversal = optional(bool, null)<br/>    enable_dpd           = optional(bool, null)<br/>    tunnel_ike_config = optional(list(object({<br/>      ike_auth_alg = optional(string, null)<br/>      local_id     = optional(string, null)<br/>      ike_enc_alg  = optional(string, null)<br/>      ike_version  = optional(string, null)<br/>      ike_mode     = optional(string, null)<br/>      ike_lifetime = optional(string, null)<br/>      psk          = optional(string, null)<br/>      remote_id    = optional(string, null)<br/>      ike_pfs      = optional(string, null)<br/>    })), [])<br/>    tunnel_bgp_config = optional(list(object({<br/>      local_asn    = optional(string, null)<br/>      tunnel_cidr  = optional(string, null)<br/>      local_bgp_ip = optional(string, null)<br/>    })), [])<br/>    tunnel_ipsec_config = optional(list(object({<br/>      ipsec_pfs      = optional(string, null)<br/>      ipsec_enc_alg  = optional(string, null)<br/>      ipsec_auth_alg = optional(string, null)<br/>      ipsec_lifetime = optional(number, null)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPN belongs the vpc\_id, the field can't be changed. | `string` | `""` | no |
 | <a name="input_vpn_bandwidth"></a> [vpn\_bandwidth](#input\_vpn\_bandwidth) | The value should be 10, 100, 200, 500, 1000 if the user is postpaid, otherwise it can be 5, 10, 20, 50, 100, 200, 500, 1000. | `number` | `10` | no |
 | <a name="input_vpn_charge_type"></a> [vpn\_charge\_type](#input\_vpn\_charge\_type) | The charge type for instance. Valid value: PostPaid, PrePaid. Default to PostPaid. | `string` | `"PostPaid"` | no |
