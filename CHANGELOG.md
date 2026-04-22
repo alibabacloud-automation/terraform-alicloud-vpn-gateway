@@ -1,3 +1,14 @@
+## [3.0.0](https://github.com/alibabacloud-automation/terraform-alicloud-vpn-gateway/compare/v2.0.0...v3.0.0) (2026-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* add provider version constraint for aliyun/alicloud
+
+### Features
+
+* add provider version constraint for aliyun/alicloud ([5858219](https://github.com/alibabacloud-automation/terraform-alicloud-vpn-gateway/commit/5858219e278d68db66c930f93fdcf8620902de5b))
+
 ## 2.0.0 (2024-11-25)
 
 - Module: support tunnel options [GH-7](https://github.com/alibabacloud-automation/terraform-alicloud-vpn-gateway/pull/7)
